@@ -1,0 +1,60 @@
+version: "3.7"
+
+services:
+  plextime-scripts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: plextime-scripts
+    container_name: plextime-scripts
+    restart: always
+    environment:
+      - INTERNAL_SCHEDULING=false
+      - PLEXTIME_USER=${PLEXTIME_USER}
+      - PLEXTIME_PASSWORD=${PLEXTIME_PASSWORD}
+      - CHECKIN_JOURNAL_OPTION=${CHECKIN_JOURNAL_OPTION}
+      - CHECKOUT_JOURNAL_OPTION=${CHECKOUT_JOURNAL_OPTION}
+      - CHECKIN_RANDOM_MARGIN=${CHECKIN_RANDOM_MARGIN}
+      - CHECKOUT_RANDOM_MARGIN=${CHECKOUT_RANDOM_MARGIN}
+      - TELEGRAM_NOTIFICATIONS=${TELEGRAM_NOTIFICATIONS}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHANNEL_ID=${TELEGRAM_CHANNEL_ID}
+      - TZ=${TZ}
+    volumes:
+      - ./log:/plextime-scripts/log
+    labels:
+      ## Enable Ofelia scheduler ##
+      - ofelia.enabled=true
+
+      ## Check In script scheduling ##
+      - ofelia.job-exec.plexus-checkin.schedule=${CHECKIN_CRON_EXPRESSION}
+      - ofelia.job-exec.plexus-checkin.command=random-checkin
+
+      ## Check Out script scheduling for full days ##
+      - ofelia.job-exec.plexus-checkout-full.schedule=${CHECKOUT_FULL_DAY_CRON_EXPRESSION}
+      - ofelia.job-exec.plexus-checkout-full.command=random-checkout
+
+      ## Check Out script scheduling for half days ##
+      - ofelia.job-exec.plexus-checkout-half.schedule=${CHECKOUT_HALF_DAY_CRON_EXPRESSION}
+      - ofelia.job-exec.plexus-checkout-half.command=random-checkout
+
+  ### Ofelia is a modern and low footprint job scheduler for docker environments, built on Go. ###
+  plexus-ofelia:
+    image: mcuadros/ofelia
+    container_name: plexus-ofelia
+    restart: always
+    command: daemon --docker
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      ## Watchtower configuration ##
+      - com.centurylinklabs.watchtower.enable=true
+
+      ## Diun configuration ##
+      - diun.enable=true
+
+networks:
+  default:
+    name: plextime-scripts-network

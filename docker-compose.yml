@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  plextime-scripts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: plextime-scripts
+    container_name: plextime-scripts
+    restart: always
+    environment:
+      - INTERNAL_SCHEDULING=true
+      - PLEXTIME_USER=${PLEXTIME_USER}
+      - PLEXTIME_PASSWORD=${PLEXTIME_PASSWORD}
+      - CHECKIN_JOURNAL_OPTION=${CHECKIN_JOURNAL_OPTION}
+      - CHECKOUT_JOURNAL_OPTION=${CHECKOUT_JOURNAL_OPTION}
+      - CHECKIN_RANDOM_MARGIN=${CHECKIN_RANDOM_MARGIN}
+      - CHECKOUT_RANDOM_MARGIN=${CHECKOUT_RANDOM_MARGIN}
+      - TELEGRAM_NOTIFICATIONS=${TELEGRAM_NOTIFICATIONS}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHANNEL_ID=${TELEGRAM_CHANNEL_ID}
+      - TZ=${TZ}
+    volumes:
+      - ./log:/plextime-scripts/log
+
+networks:
+  default:
+    name: plextime-scripts-network
