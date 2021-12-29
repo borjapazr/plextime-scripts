@@ -1,4 +1,4 @@
-# 🤖⏰ Plextime scripts
+# 🤖⏰ Plextime scripts ![GitHub CI Workflow Status](https://img.shields.io/github/workflow/status/borjapazr/plextime-scripts/CI?style=flat-square&logo=github&label=CI)
 
 Scripts for automatic clocking in and out on Plextime platform written in Python and scheduled using schedule (Python library) or Ofelia (Docker)
 
