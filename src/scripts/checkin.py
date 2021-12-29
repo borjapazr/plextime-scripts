@@ -20,7 +20,7 @@ from src.utils.telegram_notificator import TelegramNotificator
 LOGGER = PlxLogger.get_logger("checkin")
 
 
-def checkin():
+def checkin() -> None:
     if PlextimeSession().checkin_if_working_day_and_not_checkedin_before():
         checkin_message = CHECKIN_MESSAGE.format(
             checkin_datetime=datetime.now().strftime("%d/%m/%Y at %H:%M:%S")
@@ -30,12 +30,12 @@ def checkin():
             TelegramNotificator().send_notification(checkin_message)
 
 
-def random_checkin():
+def random_checkin() -> None:
     sleep(randint(0, CHECKIN_RANDOM_MARGIN))
     checkin()
 
 
-def main():
+def main() -> None:
     checkin()
 
 

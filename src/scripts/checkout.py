@@ -21,7 +21,7 @@ from src.utils.telegram_notificator import TelegramNotificator
 LOGGER = PlxLogger.get_logger("checkout")
 
 
-def checkout():
+def checkout() -> None:
     if PlextimeSession().checkout_if_checkedin_before():
         checkout_message = CHECKOUT_MESSAGE.format(
             checkout_datetime=datetime.now().strftime("%d/%m/%Y at %H:%M:%S")
@@ -31,7 +31,7 @@ def checkout():
             TelegramNotificator().send_notification(checkout_message)
 
 
-def random_checkout():
+def random_checkout() -> None:
     sleep(
         randint(
             CHECKIN_RANDOM_MARGIN,
@@ -43,7 +43,7 @@ def random_checkout():
     checkout()
 
 
-def main():
+def main() -> None:
     checkout()
 
 

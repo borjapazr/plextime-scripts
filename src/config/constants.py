@@ -24,6 +24,7 @@ CHECKOUT_JOURNAL_OPTION = getenv("CHECKOUT_JOURNAL_OPTION", 8)
 PLEXTIME_HEADERS = {
     "Content-Type": "application/json",
     "api-key": PLEXTIME_API_KEY,
+    "Authorization": None,
 }
 CHECKIN_MESSAGE = "↘️ Check-in to work successfully completed on {checkin_datetime}"
 CHECKOUT_MESSAGE = "↙️ Check-out to work successfully completed on {checkout_datetime}"

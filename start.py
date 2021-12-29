@@ -21,7 +21,7 @@ DAYS = {
 }
 
 
-def schedule_tasks():
+def schedule_tasks() -> None:
     if get_jobs("check"):
         LOGGER.info("Cleaning up old schedulings")
         clear("check")
@@ -46,7 +46,7 @@ def schedule_tasks():
             )
 
 
-def main():
+def main() -> None:
     if INTERNAL_SCHEDULING:
         LOGGER.info("Internal scheduling enabled")
         timetable_update_weekday = DAYS[1]

@@ -12,7 +12,7 @@ class PlxLogger:
     __FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
     @staticmethod
-    def get_logger(service):
+    def get_logger(service: str) -> logging.Logger:
         logger = logging.getLogger(service)
         logger.setLevel(PlxLogger.__LEVEL)
         logger.addHandler(PlxLogger.__get_console_handler())
@@ -20,14 +20,14 @@ class PlxLogger:
         return logger
 
     @staticmethod
-    def __get_console_handler():
+    def __get_console_handler() -> logging.Handler:
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(coloredlogs.ColoredFormatter(PlxLogger.__FORMAT))
         console_handler.setLevel(PlxLogger.__LEVEL)
         return console_handler
 
     @staticmethod
-    def __get_file_handler():
+    def __get_file_handler() -> logging.Handler:
         os.makedirs(os.path.dirname(PlxLogger.__LOG_FILE), exist_ok=True)
         file_handler = logging.handlers.RotatingFileHandler(
             PlxLogger.__LOG_FILE,

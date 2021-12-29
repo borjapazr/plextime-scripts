@@ -10,7 +10,7 @@ from src.utils.plextime_session import PlextimeSession
 LOGGER = PlxLogger.get_logger("journal_options")
 
 
-def retrieve_user_journal_options():
+def retrieve_user_journal_options() -> None:
     journal_options = PlextimeSession().retrieve_journal_options()
     if journal_options:
         for option in journal_options:
@@ -19,7 +19,7 @@ def retrieve_user_journal_options():
         print("No journal options retrieved")
 
 
-def main():
+def main() -> None:
     retrieve_user_journal_options()
 
 

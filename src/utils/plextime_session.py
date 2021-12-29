@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import date, datetime
 from json import dumps
+from typing import Any, Callable, List, Optional, Union
 
 from requests import get, put
 
@@ -30,8 +31,8 @@ DATE_EXPRESSION = "%Y-%m-%d"
 DATETIME_EXPRESSION = "%Y-%m-%d %H:%M:%S"
 
 
-def check_token(func):
-    def inner(self, *args, **kwargs):
+def check_token(func: Callable) -> Callable:
+    def inner(self: Any, *args: Any, **kwargs: Any) -> Any:
         if self.token is None:
             LOGGER.error("You must be authenticated")
         else:
@@ -43,17 +44,17 @@ def check_token(func):
 class PlextimeSession:
     def __init__(
         self,
-        username=PLEXTIME_USER,
-        password=PLEXTIME_PASSWORD,
-        checkin_journal_option=CHECKIN_JOURNAL_OPTION,
-        checkout_journal_option=CHECKOUT_JOURNAL_OPTION,
-    ):
+        username: Optional[str] = PLEXTIME_USER,
+        password: Optional[str] = PLEXTIME_PASSWORD,
+        checkin_journal_option: Union[str, int] = CHECKIN_JOURNAL_OPTION,
+        checkout_journal_option: Union[str, int] = CHECKOUT_JOURNAL_OPTION,
+    ) -> None:
         self.token = None
         self.user_id = None
         self.company_id = None
         self.locality_id = None
-        self.holidays = None
-        self.vacations = None
+        self.holidays: List[date]
+        self.vacations: List[List[date]]
         self.checkin_journal_option = checkin_journal_option
         self.checkout_journal_option = checkout_journal_option
         self.origin = 2
@@ -61,7 +62,7 @@ class PlextimeSession:
         if username and password:
             self.login(username, password)
 
-    def login(self, username, password):
+    def login(self, username: str, password: str) -> None:
         login_data = {"email": username, "password": password}
         login_response = put(
             url=PLEXTIME_API_URL + PLEXTIME_LOGIN_PATH,
@@ -124,7 +125,7 @@ class PlextimeSession:
             LOGGER.error("Authentication failed")
 
     @check_token
-    def retrieve_journal_options(self):
+    def retrieve_journal_options(self) -> Optional[dict]:
         if self.token:
             journal_options_response = get(
                 url=PLEXTIME_API_URL
@@ -134,9 +135,10 @@ class PlextimeSession:
 
             if journal_options_response.ok:
                 return journal_options_response.json()["journal_options"]
+        return None
 
     @check_token
-    def retrieve_current_timetable(self):
+    def retrieve_current_timetable(self) -> Optional[dict]:
         if self.token:
             timetables_response = get(
                 url=PLEXTIME_API_URL
@@ -185,9 +187,10 @@ class PlextimeSession:
 
                     if timetable_response.ok:
                         return timetable_response.json()["times"]
+        return None
 
     @check_token
-    def checkin_if_working_day_and_not_checkedin_before(self):
+    def checkin_if_working_day_and_not_checkedin_before(self) -> bool:
         today = datetime.now().date()
         if (
             self.token
@@ -231,9 +234,10 @@ class PlextimeSession:
                         checkin_response.ok
                         and checkin_response.json()["result"] == "OK"
                     )
+        return False
 
     @check_token
-    def checkout_if_checkedin_before(self):
+    def checkout_if_checkedin_before(self) -> bool:
         today = datetime.now().date()
         if (
             self.token
@@ -277,9 +281,10 @@ class PlextimeSession:
                         checkout_response.ok
                         and checkout_response.json()["result"] == "OK"
                     )
+        return False
 
     @staticmethod
-    def _generate_body(data):
+    def _generate_body(data: dict) -> dict:
         return {
             "value": AESCipher(PLEXTIME_CRYPTO_KEY).encrypt(dumps(dumps(data))).decode()
         }
