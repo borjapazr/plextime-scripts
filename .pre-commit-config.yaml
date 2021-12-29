@@ -39,7 +39,7 @@ repos:
       - id: black
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 9feadeb
+    rev: v0.930
     hooks:
       - id: mypy
         exclude: ^tests/
@@ -49,5 +49,6 @@ repos:
               --check-untyped-defs,
               --warn-redundant-casts,
               --no-implicit-optional,
-              --strict-optional
+              --strict-optional,
           ]
+        additional_dependencies: [types-all]

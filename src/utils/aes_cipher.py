@@ -1,6 +1,6 @@
 from base64 import b64decode, b64encode
 from hashlib import md5
-from typing import Union
+from typing import Union, cast
 
 from Crypto import Random
 from Crypto.Cipher import AES
@@ -36,7 +36,11 @@ class AESCipher:
     @staticmethod
     def _unpad(data: bytes) -> bytes:
         return data[
-            : -(data[-1] if type(data[-1]) == int else ord(Union[str, bytes](data[-1])))
+            : -(
+                data[-1]
+                if type(data[-1]) == int
+                else ord(cast(Union[str, bytes], data[-1]))
+            )
         ]
 
     @staticmethod
