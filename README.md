@@ -1,4 +1,4 @@
-# 🏭⏲️ Plextime scripts
+# 🤖⏰ Plextime automatic checkin
 
 Scripts for automatic clocking in and out on Plextime platform written in Python and scheduled using schedule (Python library) or Ofelia (Docker)
 
