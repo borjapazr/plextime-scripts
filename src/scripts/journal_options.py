@@ -4,8 +4,8 @@
 Script to retrieve journal options from authenticated user
 """
 
-from src.utils.plextime_session import PlextimeSession
 from src.utils.logger import PlxLogger
+from src.utils.plextime_session import PlextimeSession
 
 LOGGER = PlxLogger.get_logger("journal_options")
 
@@ -23,5 +23,5 @@ def main():
     retrieve_user_journal_options()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

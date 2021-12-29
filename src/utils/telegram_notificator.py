@@ -11,4 +11,5 @@ class TelegramNotificator:
     def send_notification(self, message):
         if self.token and self.channel_id:
             get(
-                f"https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.channel_id}&text={message}")
+                f"https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.channel_id}&text={message}"  # noqa
+            )
