@@ -31,9 +31,24 @@ There are two ways to configure the service for automatic clocking. The first on
 
 ## 🏗️ Installation
 
-```bash
-make install
-```
+- Install dependencies
+
+  ```bash
+  pip install .
+  ```
+
+- Set up pre-commit git hook scripts
+
+  ```bash
+  pre-commit install
+  ```
+
+- Run the application locally
+
+  ```bash
+  python start.py # Locally
+  make install # With Docker
+  ```
 
 ## 🧙 Usage
 
