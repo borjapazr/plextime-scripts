@@ -115,8 +115,12 @@ class PlextimeSession:
             if vacations_response.ok:
                 self.vacations = [
                     [
-                        datetime.strptime(d["init_date"], DATE_EXPRESSION).date(),
-                        datetime.strptime(d["end_date"], DATE_EXPRESSION).date(),
+                        datetime.strptime(
+                            d["init_date"].split(" ")[0], DATE_EXPRESSION
+                        ).date(),
+                        datetime.strptime(
+                            d["end_date"].split(" ")[0], DATE_EXPRESSION
+                        ).date(),
                     ]
                     for d in vacations_response.json()["requests"]
                 ]
@@ -168,10 +172,10 @@ class PlextimeSession:
                             current_timetable = timetable["id"]
                         else:
                             init_date = datetime.strptime(
-                                timetable["init_date"], DATE_EXPRESSION
+                                timetable["init_date"].split(" ")[0], DATE_EXPRESSION
                             ).date()
                             end_date = datetime.strptime(
-                                timetable["end_date"], DATE_EXPRESSION
+                                timetable["end_date"].split(" ")[0], DATE_EXPRESSION
                             ).date()
 
                             if init_date <= today <= end_date:
