@@ -67,7 +67,7 @@ class PlextimeSession:
         login_response = put(
             url=PLEXTIME_API_URL + PLEXTIME_LOGIN_PATH,
             json=self._generate_body(login_data),
-            headers=PLEXTIME_HEADERS,
+            headers=PLEXTIME_HEADERS,  # type: ignore[arg-type]
         )
 
         if login_response.ok and login_response.json()["result"] == "OK":
@@ -83,7 +83,7 @@ class PlextimeSession:
                 + PLEXTIME_HOLIDAYS_PATH.format(
                     company_id=self.company_id, locality_id=self.locality_id
                 ),
-                headers=PLEXTIME_HEADERS,
+                headers=PLEXTIME_HEADERS,  # type: ignore[arg-type]
             )
 
             if holidays_response.ok:
@@ -109,7 +109,7 @@ class PlextimeSession:
                     date_from=first_day_year,
                     date_to=last_day_year,
                 ),
-                headers=PLEXTIME_HEADERS,
+                headers=PLEXTIME_HEADERS,  # type: ignore[arg-type]
             )
 
             if vacations_response.ok:
