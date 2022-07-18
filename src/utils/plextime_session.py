@@ -183,7 +183,9 @@ class PlextimeSession:
                             if init_date <= today <= end_date:
                                 current_timetable = timetable["id"]
 
-                    active_timetable = current_timetable if current_timetable else fallback_timetable
+                    active_timetable = (
+                        current_timetable if current_timetable else fallback_timetable
+                    )
 
                     timetable_response = get(
                         url=PLEXTIME_API_URL
