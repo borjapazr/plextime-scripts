@@ -17,7 +17,7 @@ setup(
         "schedule==1.1.0",
         "coloredlogs==15.0",
         "colorama==0.4.4",
-        "pre-commit==2.16.0",
+        "pre-commit==2.18.1",
     ],
     entry_points={
         "console_scripts": [
