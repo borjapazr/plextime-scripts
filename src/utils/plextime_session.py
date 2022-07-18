@@ -160,7 +160,9 @@ class PlextimeSession:
                 )
 
                 if timetables:
+                    fallback_timetable, current_timetable = None, None
                     today = datetime.now().date()
+
                     for timetable in timetables:
                         if not timetable["status"]:
                             continue
@@ -169,7 +171,7 @@ class PlextimeSession:
                             timetable["init_date"] is None
                             and timetable["end_date"] is None
                         ):
-                            current_timetable = timetable["id"]
+                            fallback_timetable = timetable["id"]
                         else:
                             init_date = datetime.strptime(
                                 timetable["init_date"].split(" ")[0], DATE_EXPRESSION
@@ -181,10 +183,12 @@ class PlextimeSession:
                             if init_date <= today <= end_date:
                                 current_timetable = timetable["id"]
 
+                    active_timetable = current_timetable if current_timetable else fallback_timetable
+
                     timetable_response = get(
                         url=PLEXTIME_API_URL
                         + PLEXTIME_TIMETABLE_PATH.format(
-                            company_id=self.company_id, timetable_id=current_timetable
+                            company_id=self.company_id, timetable_id=active_timetable
                         ),
                         headers=PLEXTIME_HEADERS,
                     )
