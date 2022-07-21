@@ -184,7 +184,9 @@ class PlextimeSession:
                                 current_timetable = timetable["id"]
 
                     active_timetable = (
-                        current_timetable if current_timetable else fallback_timetable
+                        current_timetable
+                        if current_timetable is not None
+                        else fallback_timetable
                     )
 
                     timetable_response = get(
